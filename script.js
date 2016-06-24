@@ -55,6 +55,7 @@ class Component {
   }
 }
 
+
 class Clock extends Component {
   //NOTE: The term "Duration" is used to represent the duration in beats before
   //      the clock switches the state of the current.
@@ -65,6 +66,24 @@ class Clock extends Component {
     this.duration = duration;
   }
 }
+
+
+class Switch extends Component {
+  constructor(gridXPos, gridYPos, outputNode, isActive) {
+    super(gridXPos, gridYPos);
+    this.outputNode = outputNode;
+    this.isActive = isActive;
+  }
+
+  flip() {
+    if (this.isActive === false) {
+      this.isActive === true;
+    } else {
+      this.isActive === false;
+    }
+  }
+}
+
 
 class LogicGate extends Component {
   constructor(gridXpos, gridYpos, inputNodeA, inputNodeB, outputNode) {
@@ -90,14 +109,27 @@ class LogicGate extends Component {
     this.inputNodeB = value;
   }
 
-  get outputNode() {
+  get OutputNode() {
     return this.outputNode;
   }
 
-  set outputNode(value) {
+  set OutputNode(value) {
     this.outputNode = value;
   }
 
+  get isFullyConnected() {
+    return (this.outputNode !== null &&
+            this.inputNodeA !== null &&
+            this.inputNodeB !== null)
+  }
+
+  get isActive() {
+    if (this.isFullyConnected) {
+      return this.isActivatable
+    } else {
+      return false;
+    }
+  }
 }
 
 
@@ -106,8 +138,8 @@ class ANDGate extends LogicGate {
     super(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode);
   }
 
-  isActive() {
-    return (this.inputNodeA.isActive() && this.inputNodeB.isActive())
+  get isActivatable() {
+    return (this.inputNodeA.isActivatable() && this.inputNodeB.isActivatable())
   }
 }
 
@@ -118,10 +150,11 @@ class ORGate extends LogicGate {
   }
 
 
-  isActive() {
-    return (this.inputNodeA.isActive() || this.inputNodeB.isActive())
+  get isActivatable() {
+    return (this.inputNodeA.isActivatable() || this.inputNodeB.isActivatable())
   }
 }
+
 
 class XORGate extends LogicGate {
   constructor(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode) {
@@ -129,10 +162,10 @@ class XORGate extends LogicGate {
   }
 
 
-  isActive() {
-    if (inputNodeA.isActive() && inputNodeB.isActive()) {
+  get isActivatable() {
+    if (inputNodeA.isActivatable() && inputNodeB.isActivatable()) {
       return false;
-    } else if (inputNodeA.isActive() || inputNodeB.isActive()) {
+    } else if (inputNodeA.isActivatable() || inputNodeB.isActivatable()) {
       return true;
     } else {
       return false;
@@ -147,8 +180,8 @@ class NANDGate extends LogicGate {
   }
 
 
-  isActive() {
-    if (inputNodeA.isActive() && inputNodeB.isActive()) {
+  get isActivatable() {
+    if (inputNodeA.isActivatable() && inputNodeB.isActivatable()) {
       return false;
     } else {
       return true;
@@ -162,8 +195,8 @@ class NORGate extends LogicGate {
     super(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode);
   }
 
-  isActive() {
-    return (!(inputNodeA.isActive() || inputNodeB.isActive()))
+  get isActivatable() {
+    return (!(inputNodeA.isActivatable() || inputNodeB.isActivatable()))
   }
 }
 
@@ -173,10 +206,10 @@ class XNORGate extends LogicGate {
     super(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode);
   }
 
-  isActive() {
-    if (inputNodeA.isActive() && inputNodeB.isActive()) {
+  get isActivatable() {
+    if (inputNodeA.isActivatable() && inputNodeB.isActivatable()) {
       return true;
-    } else if (inputNodeA.isActive() || inputNodeB.isActive()) {
+    } else if (inputNodeA.isActivatable() || inputNodeB.isActivatable()) {
       return false;
     } else {
       return true;
@@ -194,8 +227,8 @@ class Tone {
       return this.gridYPos;
     }
 
-    frequency() {
-        return 440 * Math.pow(2, (this.gridYPos / 12));
+    get frequency() {
+      return 440 * Math.pow(2, (this.gridYPos / 12));
     }
 }
 
@@ -223,4 +256,4 @@ class Player {
     }
 }
 
-var xorGate = new XORGate(100, 100, null, null, null)
+var gate = new LogicGate(100, 100, 100, 100, 100)
