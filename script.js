@@ -125,7 +125,7 @@ class LogicGate extends Component {
 
   get isActive() {
     if (this.isFullyConnected) {
-      return this.isActivatable
+      return this.isActivatable;
     } else {
       return false;
     }
@@ -255,5 +255,3 @@ class Player {
         osc.connect(ctx.destination);
     }
 }
-
-var gate = new LogicGate(100, 100, 100, 100, 100)
