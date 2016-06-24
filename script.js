@@ -10,16 +10,16 @@ const GRID_X_LENGTH_IN_CELLS = 20;
 const GRID_Y_LENGTH_IN_CELLS = 12;
 
 //Dimensions of Cell in Pixels
-const CELL_X_LENGTH_IN_PX = GRID_X_LENGTH_PX / GRID_X_LENGTH_IN_CELLS;
-const CELL_Y_LENGTH_IN_PX = GRID_Y_LENGTH_PX / GRID_Y_LENGTH_IN_CELLS;
+const CELL_X_LENGTH_IN_PX = GRID_X_LENGTH_IN_PX / GRID_X_LENGTH_IN_CELLS;
+const CELL_Y_LENGTH_IN_PX = GRID_Y_LENGTH_IN_PX / GRID_Y_LENGTH_IN_CELLS;
 
 const BEATS_PER_MINUTE = 100
 
 
 class Component {
-  constructor() {
-    this.gridXPos = nil;
-    this.gridYPos = nil;
+  constructor(gridXPos, gridYPos) {
+    this.gridXPos = gridXPos;
+    this.gridYPos = gridYPos;
   }
 
   get GridXPos() {
@@ -60,9 +60,9 @@ class Clock extends Component {
   //      the clock switches the state of the current.
   //      (EX: A clock with a duration of 2 will switch states every 2 beats)
   constructor(gridXPos, gridYPos, outputNode, duration) {
-  super(gridXPos, gridYPos);
-  this.outputNode = outputNode;
-  this.duration = duration;
+    super(gridXPos, gridYPos);
+    this.outputNode = outputNode;
+    this.duration = duration;
   }
 }
 
@@ -99,6 +99,7 @@ class LogicGate extends Component {
   }
 
 }
+
 
 class ANDGate extends LogicGate {
   constructor(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode) {
@@ -221,3 +222,5 @@ class Player {
         osc.connect(ctx.destination);
     }
 }
+
+var xorGate = new XORGate(100, 100, null, null, null)
