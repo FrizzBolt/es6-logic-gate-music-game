@@ -2,16 +2,16 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 //Dimensions of Grid in Pixels
-const GRID_X_LENGTH_PX = 1000;
-const GRID_Y_LENGTH_PX = 1000;
+const GRID_X_LENGTH_IN_PX = 1000;
+const GRID_Y_LENGTH_IN_PX = 1000;
 
 //Dimensions of Grid in Cells
-const GRID_X_LENGTH_CELL = 10;
-const GRID_Y_LENGTH_CELL = 10;
+const GRID_X_LENGTH_IN_CELLS = 20;
+const GRID_Y_LENGTH_IN_CELLS = 12;
 
 //Dimensions of Cell in Pixels
-const CELL_X_LENGTH_PX = GRID_X_LENGTH_PX / GRID_X_LENGTH_CELL;
-const CELL_Y_LENGTH_PX = GRID_Y_LENGTH_PX / GRID_Y_LENGTH_CELL;
+const CELL_X_LENGTH_IN_PX = GRID_X_LENGTH_PX / GRID_X_LENGTH_IN_CELLS;
+const CELL_Y_LENGTH_IN_PX = GRID_Y_LENGTH_PX / GRID_Y_LENGTH_IN_CELLS;
 
 const BEATS_PER_MINUTE = 100
 
@@ -73,6 +73,31 @@ class LogicGate extends Component {
     this.inputNodeB = inputNodeB;
     this.outputNode = outputNode;
   }
+
+  get InputNodeA() {
+    return this.inputNodeA;
+  }
+
+  set InputNodeA(value) {
+    this.inputNodeA = value;
+  }
+
+  get InputNodeB() {
+    return this.inputNodeB;
+  }
+
+  set InputNodeB(value) {
+    this.inputNodeB = value;
+  }
+
+  get outputNode() {
+    return this.outputNode;
+  }
+
+  set outputNode(value) {
+    this.outputNode = value;
+  }
+
 }
 
 class ANDGate extends LogicGate {
@@ -149,11 +174,11 @@ class XNORGate extends LogicGate {
 
   isActive() {
     if (inputNodeA.isActive() && inputNodeB.isActive()) {
-      return false;
-    } else if (inputNodeA.isActive() || inputNodeB.isActive()) {
       return true;
-    } else {
+    } else if (inputNodeA.isActive() || inputNodeB.isActive()) {
       return false;
+    } else {
+      return true;
     }
   }
 }
@@ -169,7 +194,7 @@ class Tone {
     }
 
     frequency() {
-        return 440 * Math.pow(2, (this.Num / 12));
+        return 440 * Math.pow(2, (this.gridYPos / 12));
     }
 }
 
