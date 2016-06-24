@@ -13,6 +13,7 @@ const GRID_Y_LENGTH_CELL = 10;
 const CELL_X_LENGTH_PX = GRID_X_LENGTH_PX / GRID_X_LENGTH_CELL;
 const CELL_Y_LENGTH_PX = GRID_Y_LENGTH_PX / GRID_Y_LENGTH_CELL;
 
+const BEATS_PER_MINUTE = 100
 
 
 class Component {
@@ -54,6 +55,16 @@ class Component {
   }
 }
 
+class Clock extends Component {
+  //NOTE: The term "Duration" is used to represent the duration in beats before
+  //      the clock switches the state of the current.
+  //      (EX: A clock with a duration of 2 will switch states every 2 beats)
+  constructor(gridXPos, gridYPos, outputNode, duration) {
+  super(gridXPos, gridYPos);
+  this.outputNode = outputNode;
+  this.duration = duration;
+  }
+}
 
 class LogicGate extends Component {
   constructor(gridXpos, gridYpos, inputNodeA, inputNodeB, outputNode) {
@@ -104,7 +115,7 @@ class XORGate extends LogicGate {
 }
 
 
-class XORGate extends LogicGate {
+class NANDGate extends LogicGate {
   constructor(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode) {
     super(gridXPos, gridYPos, inputNodeA, inputNodeB, outputNode);
   }
@@ -113,10 +124,8 @@ class XORGate extends LogicGate {
   isActive() {
     if (inputNodeA.isActive() && inputNodeB.isActive()) {
       return false;
-    } else if (inputNodeA.isActive() || inputNodeB.isActive()) {
-      return true;
     } else {
-      return false;
+      return true;
     }
   }
 }
@@ -151,16 +160,12 @@ class XNORGate extends LogicGate {
 
 
 class Tone {
-    constructor(num) {
-        this.num = num;
+    constructor(gridYPos) {
+        this.gridYPos = gridYPos;
     }
 
-    get Num() {
-        return this.num;
-    }
-
-    set Num(number) {
-        this.num = number;
+    get GridYPos() {
+      return this.gridYPos;
     }
 
     frequency() {
